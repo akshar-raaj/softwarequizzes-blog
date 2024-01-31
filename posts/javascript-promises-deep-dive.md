@@ -11,9 +11,10 @@
 
 ## Agenda
 
-* Creating a promise
 * Promise syntax
-* Returning a promise from a function
+* Creating a promise
+* Resolver function
+* Handling a promise's resolved and rejected values
 
 ## Promise
 

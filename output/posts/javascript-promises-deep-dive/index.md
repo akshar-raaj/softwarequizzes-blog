@@ -11,9 +11,10 @@
 
 ## Agenda
 
-* Creating a promise
 * Promise syntax
-* Returning a promise from a function
+* Creating a promise
+* Resolver function
+* Handling a promise's resolved and rejected values
 
 ## Promise
 
@@ -367,4 +368,4 @@ In a follow-up article, we will discuss chaining of promises and async/await
 <hr/>
 ### Shameless Plug
 
-If you work extensively with JavaScript, you should take our [quiz](http://javascript.softwarequizzes.com) to test your JavaScript knowledge.
+If you work extensively with JavaScript, you should attempt our [quiz](http://javascript.softwarequizzes.com) to test your JavaScript knowledge.
