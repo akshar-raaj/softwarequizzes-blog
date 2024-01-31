@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Software Quizzes (Posts by Akshar Raaj)</title><link>http://softwarequizzes.com/</link><description></description><atom:link href="http://softwarequizzes.com/authors/akshar-raaj.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:raaj.akshar@gmail.com"&gt;Akshar Raaj&lt;/a&gt; </copyright><lastBuildDate>Wed, 31 Jan 2024 08:40:29 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>JavaScript promises deep-dive</title><link>http://softwarequizzes.com/posts/javascript-promises-deep-dive/</link><dc:creator>Akshar Raaj</dc:creator><description>&lt;h3&gt;Agenda&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Creating a promise&lt;/li&gt;
+&lt;li&gt;Promise syntax&lt;/li&gt;
+&lt;li&gt;Returning a promise from a function&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Promise&lt;/h3&gt;
+&lt;p&gt;Promise is a JavaScript provided construct to support asynchronous programming.&lt;/p&gt;
+&lt;p&gt;MDN docs define a Promise as:&lt;/p&gt;
+&lt;p&gt;A Promise is a proxy for a value not necessarily known when the promise is created. It allows you to associate handlers with an asynchronous action's eventual success value or failure reason.&lt;/p&gt;
+&lt;p&gt;See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise.&lt;/p&gt;
+&lt;h3&gt;Creating a promise&lt;/h3&gt;
+&lt;p&gt;Let's consider you have a file called script.js. This could be used from index.html&lt;/p&gt;
+&lt;p&gt;Let's create a promise in script.js&lt;/p&gt;
+&lt;p&gt;let promise = new Promise()&lt;/p&gt;
+&lt;p&gt;Load index.html. You would notice the following error on the console.&lt;/p&gt;
+&lt;p&gt;Uncaught TypeError: Promise resolver undefined is not a function&lt;/p&gt;
+&lt;p&gt;JavaScript engine expects a function to be passed as the first argument to &lt;code&gt;Promise&lt;/code&gt; constructor. This first argument is treated as &lt;code&gt;Promise resolver&lt;/code&gt;.
+As we haven't passed any argument, hence JavaScript finds the first argument as &lt;code&gt;undefined&lt;/code&gt;. That's why it's complaining &lt;code&gt;undefined is not a function&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Let's create a function and pass that as the first argument during promise creation.&lt;/p&gt;
+&lt;p&gt;const promiseResolver = function () {
+    console.log("Promise resolver")
+  }
+  let promise = new Promise(promiseResolver)&lt;/p&gt;
+&lt;p&gt;Let's load index.html again. You would notice the following logged on the console.&lt;/p&gt;
+&lt;p&gt;Promise resolver&lt;/p&gt;
+&lt;p&gt;Thus we were able to successfully create a promise.&lt;/p&gt;
+&lt;p&gt;This also illustrates that the resolver function is immediately invoked on promise creation.&lt;/p&gt;
+&lt;p&gt;We used a function expression to create the resolver function. In other articles or code, you might see the arrow syntax being used. The equivalent code using arrow syntax would be:&lt;/p&gt;
+&lt;p&gt;let promise = new Promise(() =&amp;gt; {
+    console.log("Promise resolver")
+  })&lt;/p&gt;
+&lt;p&gt;Arrow syntax is a compact alternative to a traditional function expressions.&lt;/p&gt;
+&lt;p&gt;A promise is either eventually fulfilled or rejected. The key term here is &lt;strong&gt;eventually&lt;/strong&gt;. Whether the promise would be fulfilled or rejected isn't known at promise creation time, this might happen after some elapsed time.&lt;/p&gt;
+&lt;h3&gt;resolve&lt;/h3&gt;
+&lt;p&gt;As mentioned earlier, Promises are heavily used during asynchronous operations. As the name asynchronous suggests, the result of any asynchronous operation isn't known immediately and would only be known eventually.&lt;/p&gt;
+&lt;p&gt;Promises are often used to wrap an asynchronous operation. When the asynchronous operation completes, the promise should have ability to return the result of asynchronous operation.&lt;/p&gt;
+&lt;p&gt;That's where &lt;code&gt;resolve&lt;/code&gt; kicks-in. It allows us to return the result of asynchronous operation from a promise.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;resolve&lt;/code&gt; is a function passed to the resolver function by the JavaScript engine during promise creation time. It is passed as the first argument to the resolver function.&lt;/p&gt;
+&lt;p&gt;Hence, let's modify the resolver function to accept this first argument. The updated code would look like:&lt;/p&gt;
+&lt;p&gt;const promiseResolver = function (resolve) {
+    console.log("Promise resolver")
+  }
+  let promise = new Promise(promiseResolver)&lt;/p&gt;
+&lt;p&gt;We as engineers don't need to perform any extra step to pass &lt;code&gt;resolve&lt;/code&gt;. The JavaScript engine passes &lt;code&gt;resolve&lt;/code&gt; to &lt;code&gt;promiseResolver&lt;/code&gt; when the promise is being constructed.&lt;/p&gt;
+&lt;p&gt;Let's assume we are doing an asynchronous operation inside the promise. This generates some string value.
+To simplify things, we will hardcode a string value instead of performing an asynchronous operation.&lt;/p&gt;
+&lt;p&gt;const promiseResolver = function (resolve) {
+    const asynchronousOperationResult = "hello world"
+    console.log("Promise resolver")
+    resolve(asynchronousOperationResult)
+  }
+  let promise = new Promise(promiseResolver)&lt;/p&gt;
+&lt;p&gt;Reload the page, you would still see only &lt;code&gt;Promise resolver&lt;/code&gt; logged on the console.&lt;/p&gt;
+&lt;p&gt;As mentioned, we don't have to write anything for &lt;code&gt;resolve&lt;/code&gt;. It's a function passed by the engine to our code, we only need to invoke it.
+We could very well use another variable to get hold of this function. Let's call it &lt;code&gt;fulfill&lt;/code&gt; instead of &lt;code&gt;resolve&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;const promiseResolver = function (fulfill) {
+    const asynchronousOperationResult = "hello world"
+    console.log("Promise resolver")
+    fulfill(asynchronousOperationResult)
+  }
+  let promise = new Promise(promiseResolver)&lt;/p&gt;
+&lt;p&gt;The equivalent with arrow syntax would be:&lt;/p&gt;
+&lt;p&gt;let promise = new Promise((fulfill) =&amp;gt; {
+    const asynchronousOperationResult = "hello world"
+    console.log("Promise resolver")
+    fulfill(asynchronousOperationResult)
+  })&lt;/p&gt;
+&lt;p&gt;When &lt;code&gt;resolve&lt;/code&gt; or &lt;code&gt;fulfill&lt;/code&gt; gets invoked from inside the promise, the promise transitions from state &lt;code&gt;pending&lt;/code&gt; to &lt;code&gt;fulfilled&lt;/code&gt;. Essentially we are fulfilling the promise with a value.&lt;/p&gt;
+&lt;h3&gt;then&lt;/h3&gt;
+&lt;p&gt;When an asynchronous operation is happening, it would be wrapped in a Promise. The operation eventually succeeds and the promise fulfills that value using &lt;code&gt;resolve&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;However we need a mechanism to capture the fulfilled value.&lt;/p&gt;
+&lt;p&gt;That's where &lt;code&gt;then&lt;/code&gt; kicks-in.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;then&lt;/code&gt; is used to associate a &lt;strong&gt;handler&lt;/strong&gt; that can act on the fulfilled value. Let's create a handler first.&lt;/p&gt;
+&lt;p&gt;const fulfillHandler = function (data) {
+    console.log(data)
+  }&lt;/p&gt;
+&lt;p&gt;Let's associate this handler with the promise using promise method &lt;code&gt;then&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;promise.then(fulfillHandler)&lt;/p&gt;
+&lt;p&gt;Load the page. You would see 'hello world' logged on the console too.&lt;/p&gt;
+&lt;p&gt;The equivalent arrow syntax would be:&lt;/p&gt;
+&lt;p&gt;let promise = new Promise((fulfill) =&amp;gt; {
+    const asynchronousOperationResult = "hello world"
+    console.log("Promise resolver")
+    fulfill(asynchronousOperationResult)
+  })&lt;/p&gt;
+&lt;p&gt;promise.then((data) =&amp;gt; {
+    console.log(data)
+  })&lt;/p&gt;
+&lt;h3&gt;reject&lt;/h3&gt;
+&lt;p&gt;At times, the asynchronouse operation would not succeed. The promise needs ability to convey the same as well. That's where &lt;code&gt;reject&lt;/code&gt; kicks-in.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;reject&lt;/code&gt; is a function passed to the resolver function by the JavaScript engine during promise creation time. It is passed as the second argument to the resolver function.&lt;/p&gt;
+&lt;p&gt;Hence, let's modify the resolver function to accept this second argument. The updated code would look like:&lt;/p&gt;
+&lt;p&gt;const promiseResolver = function (fulfill, reject) {
+    const asynchronousOperationResult = "hello world"
+    console.log("Promise resolver")
+    fulfill(asynchronousOperationResult)
+  }
+  let promise = new Promise(promiseResolver)&lt;/p&gt;
+&lt;p&gt;We as engineers don't need to perform any extra step to pass &lt;code&gt;reject&lt;/code&gt;. The JavaScript engine passes &lt;code&gt;reject&lt;/code&gt; to &lt;code&gt;promiseResolver&lt;/code&gt; when the promise is being constructed.&lt;/p&gt;
+&lt;p&gt;Let's assume the asynchronous operation is resulting in some integer. Our desired behaviour is to fulfill the promise with an even number. If the generated number is odd, then we treat it as an unsuccessful operation. Hence instead of fulfilling we want to reject the promise.&lt;/p&gt;
+&lt;p&gt;Let's modify script.js to look like:&lt;/p&gt;
+&lt;p&gt;const promiseResolver = function (fulfill, reject) {
+    console.log("Promise resolver")
+    const asynchronousOperationResult = Math.floor(Math.random() * 10)
+    if (asynchronousOperationResult % 2 == 0) {
+      fulfill(asynchronousOperationResult)
+    }
+    else {
+      reject("Odd number")
+    }
+  }
+  let promise = new Promise(promiseResolver)&lt;/p&gt;
+&lt;p&gt;const fulfillHandler = function (data) {
+    console.log(data)
+  }&lt;/p&gt;
+&lt;p&gt;promise.then(fulfillHandler)&lt;/p&gt;
+&lt;p&gt;Refresh the page several times.&lt;/p&gt;
+&lt;p&gt;When even numbers are generated, you would see the even number being logged.&lt;/p&gt;
+&lt;p&gt;When an odd number gets generated, you would see the following uncaught exception on the console.&lt;/p&gt;
+&lt;p&gt;Uncaught (in promise) Odd number&lt;/p&gt;
+&lt;p&gt;It is conventional to refer to this function as &lt;code&gt;reject&lt;/code&gt;. Similar to &lt;code&gt;resolve/fulfill&lt;/code&gt; case, we can refer to it with any other name.
+We can equally well refer to it as &lt;code&gt;unfulfill&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;const promiseResolver = function (fulfill, unfulfill) {
+    console.log("Promise resolver")
+    const asynchronousOperationResult = Math.floor(Math.random() * 10)
+    if (asynchronousOperationResult % 2 == 0) {
+      fulfill(asynchronousOperationResult)
+    }
+    else {
+      unfulfill("Odd number")
+    }
+  }&lt;/p&gt;
+&lt;p&gt;Let's stick with the convention and keep referring to it as &lt;code&gt;reject&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Similar to how the code captured the fullfilled value of a promise, our code should have ability to capture the rejected reason too.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;then()&lt;/code&gt; accepts a handler which can be used to capture the rejected reason. This handler needs to be provided as second argument to &lt;code&gt;then&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;const fulfillHandler = function (data) {
+    console.log(data)
+  }&lt;/p&gt;
+&lt;p&gt;const rejectHandler = function (reason) {
+    console.log(reason)
+  }&lt;/p&gt;
+&lt;p&gt;promise.then(fulfillHandler, rejectHandler)&lt;/p&gt;
+&lt;p&gt;The complete code would look like:&lt;/p&gt;
+&lt;p&gt;const promiseResolver = function (fulfill, unfulfill) {
+    console.log("Promise resolver")
+    const asynchronousOperationResult = Math.floor(Math.random() * 10)
+    if (asynchronousOperationResult % 2 == 0) {
+      fulfill(asynchronousOperationResult)
+    }
+    else {
+      unfulfill("Odd number")
+    }
+  }
+  let promise = new Promise(promiseResolver)&lt;/p&gt;
+&lt;p&gt;const fulfillHandler = function (data) {
+    console.log(data)
+  }&lt;/p&gt;
+&lt;p&gt;const rejectHandler = function (reason) {
+    console.log(reason)
+  }&lt;/p&gt;
+&lt;p&gt;promise.then(fulfillHandler, rejectHandler)&lt;/p&gt;
+&lt;p&gt;Refresh the page several times.&lt;/p&gt;
+&lt;p&gt;The output would either log the generated even number or would log the message &lt;code&gt;Odd number&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Returning promise from a function&lt;/h3&gt;
+&lt;p&gt;In the previous examples, we were creating our promise in the global scope.&lt;/p&gt;
+&lt;p&gt;In all likelihood, your promises would be defined inside a function and returned from there.&lt;/p&gt;
+&lt;p&gt;Let's declare our promise inside a function and return it on function invocation.&lt;/p&gt;
+&lt;p&gt;const oddEven = function () {&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;promiseResolver&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fulfill&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;unfulfill&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;asynchronousOperationResult&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;floor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;asynchronousOperationResult&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;fulfill&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;asynchronousOperationResult&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;unfulfill&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Odd number"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;promise&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Promise&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;promiseResolver&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;promise&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;We can then invoke oddEven() which will return a promise.&lt;/p&gt;
+&lt;p&gt;let promise = oddEven()&lt;/p&gt;
+&lt;p&gt;We can then define the handlers and register it with the promise using then().&lt;/p&gt;
+&lt;p&gt;const fulfillHandler = function (data) {
+    console.log(data)
+  }&lt;/p&gt;
+&lt;p&gt;const rejectHandler = function (reason) {
+    console.log(reason)
+  }&lt;/p&gt;
+&lt;p&gt;promise.then(fulfillHandler, rejectHandler)&lt;/p&gt;
+&lt;h3&gt;Rejecting with an error&lt;/h3&gt;
+&lt;p&gt;In the previous example, we were only rejecting with a string message.&lt;/p&gt;
+&lt;p&gt;A more conventional way would be to reject with an instance of error. That allows us to add some contextual information too.&lt;/p&gt;
+&lt;p&gt;Thus reject part should be modified to return an &lt;code&gt;Error&lt;/code&gt; instance.&lt;/p&gt;
+&lt;p&gt;const oddEven = function () {&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;promiseResolver&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fulfill&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;unfulfill&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;asynchronousOperationResult&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;floor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Math&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;asynchronousOperationResult&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;fulfill&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;asynchronousOperationResult&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Odd number"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;number&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;asynchronousOperationResult&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;unfulfill&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;promise&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Promise&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;promiseResolver&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;promise&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;And reject handler should be modified to deal with an error instance.&lt;/p&gt;
+&lt;p&gt;const rejectHandler = function (error) {
+    console.log(error.message)
+    console.log(error.number)
+  }&lt;/p&gt;
+&lt;h3&gt;fetch&lt;/h3&gt;
+&lt;p&gt;Until now we have been cooking up our own examples to understand Promise, promise resolution, resolve, reject and then.&lt;/p&gt;
+&lt;p&gt;It would make more sense if we could relate it with a real-world example.&lt;/p&gt;
+&lt;p&gt;JavaScript fetch API is promise based. Let's explore that.&lt;/p&gt;
+&lt;p&gt;Let's assume we are building an application which displays emojis. API endpoint https://emojihub.yurace.pro/api provides random emojis.&lt;/p&gt;
+&lt;p&gt;fetch() can be used to retrieve data from servers.
+fetch() returns a promise. This is very similar to how oddEven() returned a promise.&lt;/p&gt;
+&lt;p&gt;Let's modify script.js to pull a random emoji.&lt;/p&gt;
+&lt;p&gt;let promise = fetch('https://emojihub.yurace.pro/api/random')
+  promise.then((response) =&amp;gt; {
+    console.log(response.status)
+  })&lt;/p&gt;
+&lt;p&gt;fetch() returns a promise. We have used &lt;code&gt;then&lt;/code&gt; with the promise and passed it one argument. Thus we have passed it the handler that would be called when the promise is fulfilled.&lt;/p&gt;
+&lt;p&gt;In the handler, we are logging the response status code.&lt;/p&gt;
+&lt;p&gt;We haven't added the second argument to &lt;code&gt;then()&lt;/code&gt;, thus a rejected promise wouldn't be gracefully handled by our code.&lt;/p&gt;
+&lt;p&gt;Let's create the reject handler too and add it.&lt;/p&gt;
+&lt;p&gt;let promise = fetch('http://raajakshar.com')
+  const fulfillHandler = (response) =&amp;gt; {
+    console.log(response.status)
+  }
+  const rejectHandler = (exception) =&amp;gt; {
+    console.log(exception.message)
+  }
+  promise.then(fulfillHandler, rejectHandler)&lt;/p&gt;
+&lt;p&gt;The domain raajakshar.com isn't configured. Hence, no connection can be established, and in such cases the promise is rejected.
+We have added a reject handler.&lt;/p&gt;
+&lt;p&gt;Load the page, and you would see the message 'Failed to fetch'.&lt;/p&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;This article covered the following:
+1. Creating a promise
+2. Passing a resolver function to promise
+3. Fulfilling a promise by invoking resolve()
+4. Rejecting a promise by invoking reject()
+5. Creating resolve handler and reject handler.
+6. Registering the handlers using promise's then().&lt;/p&gt;
+&lt;p&gt;In a follow-up article, we will discuss chaining of promises and async/await&lt;/p&gt;</description><guid>http://softwarequizzes.com/posts/javascript-promises-deep-dive/</guid><pubDate>Wed, 31 Jan 2024 08:39:07 GMT</pubDate></item></channel></rss>

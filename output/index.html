@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Evaluate your skills and knowledge in SQL, Python, JavaScript, Linux, Docker and more!">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Software Quizzes</title>
+<link href="assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="rss.xml">
+<link rel="canonical" href="http://softwarequizzes.com/">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/javascript-promises-deep-dive/" type="text/html">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href=".">
+
+            <span id="blog-title">Software Quizzes</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav"></ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="archive.html" class="nav-link">Archive</a>
+                </li>
+<li class="nav-item">
+<a href="categories/" class="nav-link">Tags</a>
+                </li>
+<li class="nav-item">
+<a href="rss.xml" class="nav-link">RSS feed</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+    
+        
+
+    
+        
+    <div class="postindex">
+            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/javascript-promises-deep-dive/" class="u-url">JavaScript promises deep-dive</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Akshar Raaj
+                    </span></p>
+            <p class="dateline">
+            <a href="posts/javascript-promises-deep-dive/" rel="bookmark">
+            <time class="published dt-published" datetime="2024-01-31T14:09:07+05:30" itemprop="datePublished" title="2024-01-31 14:09">2024-01-31 14:09</time></a>
+            </p>
+                        <p class="commentline">
+    
+
+
+                </p>
+</div>
+            </header><div class="e-content entry-content">
+                    <h3>Agenda</h3>
+<ul>
+<li>Creating a promise</li>
+<li>Promise syntax</li>
+<li>Returning a promise from a function</li>
+</ul>
+<h3>Promise</h3>
+<p>Promise is a JavaScript provided construct to support asynchronous programming.</p>
+<p>MDN docs define a Promise as:</p>
+<p><code>A Promise is a proxy for a value not necessarily known when the promise is created. It allows you to associate handlers with an asynchronous action's eventual success value or failure reason.</code></p>
+<h3>Creating a promise</h3>
+<p>Let's consider you have a JavaScript file called <code>script.js</code>. This could be used from <code>index.html</code>.</p>
+<p>Let's create a promise in <code>script.js</code>.</p>
+<div class="code"><pre class="code literal-block">let promise = new Promise()
+</pre></div>
+
+<p>Load <code>index.html</code>. You would notice the following error on the console.</p>
+<div class="code"><pre class="code literal-block">Uncaught TypeError: Promise resolver undefined is not a function
+</pre></div>
+
+<p>JavaScript engine expects a function to be passed as the first argument to <code>Promise</code> constructor. This first argument is treated as <code>Promise resolver</code>.
+As we haven't passed any argument, hence JavaScript finds the first argument as <code>undefined</code>. That's why it's complaining <code>undefined is not a function</code>.</p>
+<p>Let's create a function and pass that as the first argument during promise creation.</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">promiseResolver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"Promise resolver"</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Promise</span><span class="p">(</span><span class="n">promiseResolver</span><span class="p">)</span>
+</pre></div>
+
+<p>Let's load index.html again. You would notice the following logged on the console.</p>
+<div class="code"><pre class="code literal-block">Promise resolver
+</pre></div>
+
+<p>Thus we were able to successfully create a promise.</p>
+<p>This also illustrates that the resolver function is immediately invoked on promise creation.</p>
+<p>We used a function expression to create the resolver function. In other articles or code, you might see the arrow syntax being used. The equivalent code using arrow syntax would be:</p>
+<div class="code"><pre class="code literal-block">let promise = new Promise(() =&gt; {
+  console.log("Promise resolver")
+})
+</pre></div>
+
+<p>Arrow syntax is a compact alternative to a traditional function expressions.</p>
+<p>A promise is either eventually fulfilled or rejected. The key term here is <strong>eventually</strong>. Whether the promise would be fulfilled or rejected isn't known at promise creation time, this might happen after some elapsed time.</p>
+<h3>resolve</h3>
+<p>As mentioned earlier, Promises are heavily used during asynchronous operations. As the name asynchronous suggests, the result of any asynchronous operation isn't known immediately and would only be known eventually.</p>
+<p>Promises are often used to wrap an asynchronous operation. When the asynchronous operation completes, the promise should have ability to return the result of asynchronous operation.</p>
+<p>That's where <code>resolve</code> kicks-in. It allows us to return the result of asynchronous operation from a promise.</p>
+<p><code>resolve</code> is a function passed to the resolver function by the JavaScript engine during promise creation time. It is passed as the first argument to the resolver function.</p>
+<p>Hence, let's modify the resolver function to accept this first argument. The updated code would look like:</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">promiseResolver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">resolve</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"Promise resolver"</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Promise</span><span class="p">(</span><span class="n">promiseResolver</span><span class="p">)</span>
+</pre></div>
+
+<p>We as engineers don't need to perform any extra step to pass <code>resolve</code>. The JavaScript engine passes <code>resolve</code> to <code>promiseResolver</code> when the promise is being constructed.</p>
+<p>Let's assume we are doing an asynchronous operation inside the promise. This generates some string value.
+To simplify things, we will hardcode a string value instead of performing an asynchronous operation.</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">promiseResolver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">resolve</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hello world"</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"Promise resolver"</span><span class="p">)</span>
+<span class="w">  </span><span class="n">resolve</span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Promise</span><span class="p">(</span><span class="n">promiseResolver</span><span class="p">)</span>
+</pre></div>
+
+<p>Reload the page, you would still see only <code>Promise resolver</code> logged on the console.</p>
+<p>As mentioned, we don't have to write anything for <code>resolve</code>. It's a function passed by the engine to our code, we only need to invoke it.
+We could very well use another variable to get hold of this function. Let's call it <code>fulfill</code> instead of <code>resolve</code>.</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">promiseResolver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">fulfill</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hello world"</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"Promise resolver"</span><span class="p">)</span>
+<span class="w">  </span><span class="n">fulfill</span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Promise</span><span class="p">(</span><span class="n">promiseResolver</span><span class="p">)</span>
+</pre></div>
+
+<p>The equivalent with arrow syntax would be:</p>
+<div class="code"><pre class="code literal-block"><span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Promise</span><span class="p">((</span><span class="n">fulfill</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hello world"</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"Promise resolver"</span><span class="p">)</span>
+<span class="w">  </span><span class="n">fulfill</span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<p>When <code>resolve</code> or <code>fulfill</code> gets invoked from inside the promise, the promise transitions from state <code>pending</code> to <code>fulfilled</code>. Essentially we are fulfilling the promise with a value.</p>
+<h3>then</h3>
+<p>When an asynchronous operation is happening, it would be wrapped in a Promise. The operation eventually succeeds and the promise fulfills that value using <code>resolve</code>.</p>
+<p>However we need a mechanism to capture the fulfilled value.</p>
+<p>That's where <code>then</code> kicks-in.</p>
+<p><code>then</code> is used to associate a <strong>handler</strong> that can act on the fulfilled value. Let's create a handler first.</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">fulfillHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Let's associate this handler with the promise using promise method <code>then</code>.</p>
+<div class="code"><pre class="code literal-block"><span class="nv">promise</span>.<span class="k">then</span><span class="ss">(</span><span class="nv">fulfillHandler</span><span class="ss">)</span>
+</pre></div>
+
+<p>Load the page. You would see 'hello world' logged on the console too.</p>
+<p>The equivalent arrow syntax would be:</p>
+<div class="code"><pre class="code literal-block"><span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Promise</span><span class="p">((</span><span class="n">fulfill</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hello world"</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"Promise resolver"</span><span class="p">)</span>
+<span class="w">  </span><span class="n">fulfill</span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="n">promise</span><span class="o">.</span><span class="n">then</span><span class="p">((</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>reject</h3>
+<p>At times, the asynchronouse operation would not succeed. The promise needs ability to convey the same as well. That's where <code>reject</code> kicks-in.</p>
+<p><code>reject</code> is a function passed to the resolver function by the JavaScript engine during promise creation time. It is passed as the second argument to the resolver function.</p>
+<p>Hence, let's modify the resolver function to accept this second argument. The updated code would look like:</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">promiseResolver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">fulfill</span><span class="p">,</span><span class="w"> </span><span class="n">reject</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hello world"</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"Promise resolver"</span><span class="p">)</span>
+<span class="w">  </span><span class="n">fulfill</span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Promise</span><span class="p">(</span><span class="n">promiseResolver</span><span class="p">)</span>
+</pre></div>
+
+<p>We as engineers don't need to perform any extra step to pass <code>reject</code>. The JavaScript engine passes <code>reject</code> to <code>promiseResolver</code> when the promise is being constructed.</p>
+<p>Let's assume the asynchronous operation is resulting in some integer. Our desired behaviour is to fulfill the promise with an even number. If the generated number is odd, then we treat it as an unsuccessful operation. Hence instead of fulfilling we want to reject the promise.</p>
+<p>Let's modify script.js to look like:</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">promiseResolver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">fulfill</span><span class="p">,</span><span class="w"> </span><span class="n">reject</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"Promise resolver"</span><span class="p">)</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">fulfill</span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">reject</span><span class="p">(</span><span class="s2">"Odd number"</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Promise</span><span class="p">(</span><span class="n">promiseResolver</span><span class="p">)</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">fulfillHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">promise</span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">fulfillHandler</span><span class="p">)</span>
+</pre></div>
+
+<p>Refresh the page several times.</p>
+<p>When even numbers are generated, you would see the even number being logged.</p>
+<p>When an odd number gets generated, you would see the following uncaught exception on the console.</p>
+<p>Uncaught (in promise) Odd number</p>
+<p>It is conventional to refer to this function as <code>reject</code>. Similar to <code>resolve/fulfill</code> case, we can refer to it with any other name.
+We can equally well refer to it as <code>unfulfill</code> instead of <code>reject</code>.</p>
+<p>Similar to how the code captured the fullfilled value of a promise, our code should have ability to capture the rejected reason too.</p>
+<p><code>then()</code> accepts a handler which can be used to capture the rejected reason. This handler needs to be provided as second argument to <code>then</code>.</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">fulfillHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">rejectHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">reason</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">promise</span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">fulfillHandler</span><span class="p">,</span><span class="w"> </span><span class="n">rejectHandler</span><span class="p">)</span>
+</pre></div>
+
+<p>The complete code would look like:</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">promiseResolver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">fulfill</span><span class="p">,</span><span class="w"> </span><span class="n">unfulfill</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"Promise resolver"</span><span class="p">)</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">fulfill</span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">unfulfill</span><span class="p">(</span><span class="s2">"Odd number"</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Promise</span><span class="p">(</span><span class="n">promiseResolver</span><span class="p">)</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">fulfillHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">rejectHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">reason</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">promise</span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">fulfillHandler</span><span class="p">,</span><span class="w"> </span><span class="n">rejectHandler</span><span class="p">)</span>
+</pre></div>
+
+<p>Refresh the page several times.</p>
+<p>The output would either log the generated even number or would log the message <code>Odd number</code>.</p>
+<h3>Returning promise from a function</h3>
+<p>In the previous examples, we were creating our promise in the global scope.</p>
+<p>In all likelihood, your promises would be defined inside a function and returned from there.</p>
+<p>Let's declare our promise inside a function and return it on function invocation.</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">oddEven</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">promiseResolver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">fulfill</span><span class="p">,</span><span class="w"> </span><span class="n">unfulfill</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">fulfill</span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">unfulfill</span><span class="p">(</span><span class="s2">"Odd number"</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Promise</span><span class="p">(</span><span class="n">promiseResolver</span><span class="p">)</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">promise</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>We can then invoke oddEven() which will return a promise.</p>
+<div class="code"><pre class="code literal-block">let promise = oddEven()
+</pre></div>
+
+<p>We can then define the handlers and register it with the promise using then().</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">fulfillHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">rejectHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">reason</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">promise</span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">fulfillHandler</span><span class="p">,</span><span class="w"> </span><span class="n">rejectHandler</span><span class="p">)</span>
+</pre></div>
+
+<h3>Rejecting with an error</h3>
+<p>In the previous example, we were only rejecting with a string message.</p>
+<p>A more conventional way would be to reject with an instance of error. That allows us to add some contextual information too.</p>
+<p>Thus reject part should be modified to return an <code>Error</code> instance.</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">oddEven</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">promiseResolver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">fulfill</span><span class="p">,</span><span class="w"> </span><span class="n">unfulfill</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">fulfill</span><span class="p">(</span><span class="n">asynchronousOperationResult</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Error</span><span class="p">(</span><span class="s2">"Odd number"</span><span class="p">)</span>
+<span class="w">      </span><span class="n">error</span><span class="o">.</span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asynchronousOperationResult</span>
+<span class="w">      </span><span class="n">unfulfill</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">Promise</span><span class="p">(</span><span class="n">promiseResolver</span><span class="p">)</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">promise</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>And reject handler should be modified to deal with an error instance.</p>
+<div class="code"><pre class="code literal-block"><span class="k">const</span><span class="w"> </span><span class="n">rejectHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>fetch</h3>
+<p>Until now we have been cooking up our own examples to understand Promise, promise resolution, resolve, reject and then.</p>
+<p>It would make more sense if we could relate it with a real-world example.</p>
+<p>JavaScript fetch API is promise based. Let's explore that.</p>
+<p>Let's assume we are building an application which displays emojis. API endpoint https://emojihub.yurace.pro/api provides random emojis.</p>
+<p>fetch() can be used to retrieve data from servers.
+fetch() returns a promise. This is very similar to how oddEven() returned a promise.</p>
+<p>Let's modify script.js to pull a random emoji.</p>
+<div class="code"><pre class="code literal-block"><span class="nv">let</span><span class="w"> </span><span class="nv">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">fetch</span><span class="ss">(</span><span class="s1">'https://emojihub.yurace.pro/api/random'</span><span class="ss">)</span>
+<span class="nv">promise</span>.<span class="k">then</span><span class="ss">((</span><span class="nv">response</span><span class="ss">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span>{
+<span class="w">  </span><span class="nv">console</span>.<span class="nv">log</span><span class="ss">(</span><span class="nv">response</span>.<span class="nv">status</span><span class="ss">)</span>
+}<span class="ss">)</span>
+</pre></div>
+
+<p>fetch() returns a promise. We have used <code>then</code> with the promise and passed it one argument. Thus we have passed it the handler that would be called when the promise is fulfilled.</p>
+<p>In the handler, we are logging the response status code.</p>
+<p>We haven't added the second argument to <code>then()</code>, thus a rejected promise wouldn't be gracefully handled by our code.</p>
+<p>Let's create the reject handler too and add it.</p>
+<div class="code"><pre class="code literal-block"><span class="n">let</span><span class="w"> </span><span class="n">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fetch</span><span class="p">(</span><span class="s1">'http://raajakshar.com'</span><span class="p">)</span>
+<span class="k">const</span><span class="w"> </span><span class="n">fulfillHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">response</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">const</span><span class="w"> </span><span class="n">rejectHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">exception</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">exception</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">promise</span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">fulfillHandler</span><span class="p">,</span><span class="w"> </span><span class="n">rejectHandler</span><span class="p">)</span>
+</pre></div>
+
+<p>The domain raajakshar.com isn't configured. Hence, no connection can be established, and in such cases the promise is rejected.
+We have added a reject handler.</p>
+<p>Load the page, and you would see the message 'Failed to fetch'.</p>
+<h3>Conclusion</h3>
+<p>This article covered the following:</p>
+<ol>
+<li>Creating a promise</li>
+<li>Passing a resolver function to promise</li>
+<li>Fulfilling a promise by invoking resolve()</li>
+<li>Rejecting a promise by invoking reject()</li>
+<li>Creating resolve handler and reject handler.</li>
+<li>Registering the handlers using promise's then().</li>
+</ol>
+<p>In a follow-up article, we will discuss chaining of promises and async/await</p>
+                </div>
+            </article>
+</div>
+    
+
+    
+    
+
+
+    
+
+
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2024         <a href="mailto:raaj.akshar@gmail.com">Akshar Raaj</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

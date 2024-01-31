@@ -1,0 +1,4 @@
+Sitemap: http://softwarequizzes.com/sitemapindex.xml
+
+User-Agent: *
+Host: softwarequizzes.com
