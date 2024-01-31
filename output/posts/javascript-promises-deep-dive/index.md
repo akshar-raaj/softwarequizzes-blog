@@ -363,3 +363,8 @@ This article covered the following:
 6. Registering the handlers using promise's then().
 
 In a follow-up article, we will discuss chaining of promises and async/await
+
+<hr/>
+### Shameless Plug
+
+If you work extensively with JavaScript, you should take our [quiz](http://javascript.softwarequizzes.com) to test your JavaScript knowledge.
